@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import org.osmdroid.config.Configuration
@@ -37,6 +38,25 @@ class MainActivity : AppCompatActivity(), LocationListener {
     // Also, we make "map1" an attribute so that it can be accessed from all the class's methods.
     lateinit var map1: MapView
 
+    // Make the LocationManager an attribute so that it can be accessed from multiple methods
+    var lMgr: LocationManager? = null
+
+    // Launchers for MapChooseActivity and SetLocationActivity
+
+    val mapChooseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        it.data?.apply {
+            val opentopo = this.getBooleanExtra("com.example.basicmapapp.opentopomap", false)
+            map1.tileProvider.tileSource = if (opentopo) TileSourceFactory.OpenTopo else TileSourceFactory.MAPNIK
+        }
+    }
+    val setLocationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        it.data?.apply {
+            val lat = this.getDoubleExtra("com.example.basicmapapp.lat", 51.05)
+            val lon = this.getDoubleExtra("com.example.basicmapapp.lon", -0.72)
+            map1.controller.setCenter(GeoPoint(lat, lon))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,6 +72,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val etLat = findViewById<EditText>(R.id.etLat)
         val etLon = findViewById<EditText>(R.id.etLon)
         btn1.setOnClickListener {
+            // Remove GPS updates so that they don't interfere with setting the location
+            lMgr?.removeUpdates(this)
             val lat = etLat.text.toString().toDouble()
             val lon = etLon.text.toString().toDouble()
             map1.controller.setCenter(GeoPoint(lat, lon))
@@ -59,6 +81,36 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         // try to start GPS
         tryToStartGPS()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    // Handle menu choices
+    override fun onOptionsItemSelected(menuItem: MenuItem) : Boolean {
+        var result = true
+        when(menuItem.itemId) {
+            R.id.menuItemSetMapStyle -> {
+                // Launch the map style choose activity using the launcher
+                val intent = Intent(this, MapChooseActivity::class.java)
+                mapChooseLauncher.launch(intent)
+            }
+            R.id.menuItemSetLocation -> {
+                // For the set location menu option, remove GPS updates so that they don't
+                // interfere with setting the location
+                lMgr?.removeUpdates(this)
+
+                // Launch the set location activity using the launcher
+                val intent = Intent(this, SetLocationActivity::class.java)
+                setLocationLauncher.launch(intent)
+            }
+            else -> {
+                result = false
+            }
+        }
+        return result
     }
 
     // Try to start GPS, and request permission if not already granted.
@@ -70,8 +122,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             // If so, start the GPS listener
-            val lMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            lMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+            lMgr = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            lMgr?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
 
         } else {
             // If not, request GPS permission from the user

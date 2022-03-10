@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView android:id="@+id/tvLat2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/etLat2"
+        android:layout_height="wrap_content" android:layout_width="0dp"
+        android:textSize="24dp"
+        android:text="@string/latitude" />
+
+    <EditText android:id="@+id/etLat2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tvLat2"
+        android:inputType="numberDecimal|numberSigned"
+        android:layout_height="wrap_content" android:layout_width="0dp"
+        />
+
+    <TextView android:id="@+id/tvLon2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etLat2"
+        app:layout_constraintRight_toLeftOf="@id/etLon2"
+        android:textSize="24dp"
+        android:layout_height="wrap_content" android:layout_width="0dp"
+        android:text="@string/longitude" />
+
+    <EditText android:id="@+id/etLon2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etLat2"
+        app:layout_constraintLeft_toRightOf="@id/tvLon2"
+        android:inputType="numberDecimal|numberSigned"
+        android:layout_height="wrap_content" android:layout_width="0dp"
+        />
+
+    <Button android:id="@+id/btn2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLon2"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content" android:layout_width="0dp"
+        android:text="@string/go"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
