@@ -7,4 +7,11 @@
     <string name="setLocation">Set location</string>
     <string name="regularview">Regular map view</string>
     <string name="opentopomapview">OpenTopoMap view</string>
+    <string name="zoom">Zoom</string>
+    <string name="latitudeSummary">Latitude to display the map</string>
+    <string name="longitudeSummary">Longitude to display the map</string>
+    <string name="zoomSummary">Zoom level to display the map</string>
+    <string name="mappingProvider">Mapping style</string>
+    <string name="mappingProviderSummary">Mapping style for the map (regular or OpenTopoMap)</string>
+    <string name="preferences">Preferences</string>
 </resources>

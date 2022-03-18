@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference android:key="lat" android:title="@string/latitude"
+        android:summary="@string/latitudeSummary" android:defaultValue="51.05" />
+    <EditTextPreference android:key="lon" android:title="@string/longitude"
+        android:summary="@string/longitudeSummary" android:defaultValue="-0.72" />
+    <EditTextPreference android:key="zoom" android:title="@string/zoom"
+        android:summary="@string/zoomSummary" android:defaultValue="14" />
+    <ListPreference android:key="mappingProvider" android:entries="@array/mappingProviders"
+        android:entryValues="@array/mappingProviderValues" android:title="@string/mappingProvider"
+        android:summary="@string/mappingProviderSummary" />
+</androidx.preference.PreferenceScreen>

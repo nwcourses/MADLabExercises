@@ -2,4 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menuItemSetMapStyle" android:title="@string/setMapStyle" />
     <item android:id="@+id/menuItemSetLocation" android:title="@string/setLocation" />
+    <item android:id="@+id/menuItemPreferences" android:title="@string/preferences" />
 </menu>

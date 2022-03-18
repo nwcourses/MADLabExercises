@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mappingProviders">
+        <item>Regular</item>
+        <item>OpenTopoMap</item>
+    </string-array>
+    <string-array name="mappingProviderValues">
+        <item>REG</item>
+        <item>OTM</item>
+    </string-array>
+</resources>

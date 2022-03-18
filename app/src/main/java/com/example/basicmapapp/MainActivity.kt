@@ -9,7 +9,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -79,8 +79,24 @@ class MainActivity : AppCompatActivity(), LocationListener {
             map1.controller.setCenter(GeoPoint(lat, lon))
         }
 
-        // try to start GPS
-        tryToStartGPS()
+        // try to start GPS - commented out due to use of preferences
+        // tryToStartGPS()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        // Read the preferences
+        val lat = prefs.getString("lat", "51.05")?.toDouble() ?: 51.05
+        val lon = prefs.getString("lon", "-0.72")?.toDouble() ?: -0.72
+        val zoom = prefs.getString("zoom", "14")?.toDouble() ?: 14.0
+        val mapStyle = prefs.getString("mappingProvider", "REG")
+
+        // Use the preference values to set the location, zoom and style of the map
+        map1.controller.setCenter(GeoPoint(lat, lon))
+        map1.controller.setZoom(zoom)
+        map1.tileProvider.tileSource = if (mapStyle == "OTM") TileSourceFactory.OpenTopo else TileSourceFactory.MAPNIK
     }
 
     override fun onCreateOptionsMenu(menu: Menu) : Boolean {
@@ -105,6 +121,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 // Launch the set location activity using the launcher
                 val intent = Intent(this, SetLocationActivity::class.java)
                 setLocationLauncher.launch(intent)
+            }
+            R.id.menuItemPreferences -> {
+                val intent = Intent(this, PreferenceActivity::class.java)
+                startActivity(intent)
             }
             else -> {
                 result = false
